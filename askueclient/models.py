@@ -175,3 +175,20 @@ class TimeDay(models.Model):
         
 #    def __unicode__(self):
 #        return self.number_5min
+
+class Point_kp(models.Model):
+    point=models.IntegerField()
+    kp=models.IntegerField()
+    
+    class Meta:
+        db_table='point_kp'
+
+class Data1H(models.Model):
+    dtime = models.DateTimeField()
+    point = models.IntegerField()
+    param = models.IntegerField()
+    zn = models.FloatField()
+
+    class Meta:
+        db_table = 'data_1h'
+
