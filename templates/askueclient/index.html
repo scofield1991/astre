@@ -34,7 +34,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'askueclient:index' %}">Home</a></li>
                  
                     
 
@@ -45,15 +45,15 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar" style="width:12%">
                 {% block side_block %}
 		{% get_points_list %}
 		{% endblock %}
 
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="top:0%; left:-7%">
            <div>
-	     <iframe src="detail.html" width="1000" height="800" name="detail"></iframe>
+	     <iframe src="detail.html" width="115%" height="800"  name="detail"></iframe>
                 {% block body_block %}{% endblock %}
 	    
  <br/> <a href='/askueclient/about'>About</a>
