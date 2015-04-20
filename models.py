@@ -80,18 +80,6 @@ class AuthUserUserPermissions(models.Model):
         db_table = 'auth_user_user_permissions'
 
 
-class Data1H(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    dtime = models.DateTimeField()
-    point = models.IntegerField()
-    param = models.IntegerField()
-    zn = models.FloatField()
-
-    class Meta:
-        managed = False
-        db_table = 'data_1h'
-
-
 class Data30M(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     dtime = models.DateTimeField()
@@ -99,12 +87,11 @@ class Data30M(models.Model):
     param = models.IntegerField()
     zn = models.FloatField()
 
-   
     class Meta:
         managed = False
         db_table = 'data_30m'
-   
-    
+
+
 class Data5M(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     dtime = models.DateTimeField()
@@ -164,35 +151,16 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Groups(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    name = models.CharField(max_length=30)
-
-    class Meta:
-        managed = False
-        db_table = 'groups'
-
-
 class Point(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     obj = models.IntegerField()
     name = models.CharField(max_length=80)
     klass_u = models.IntegerField()
-    group = models.ForeignKey(Groups, db_column='group', blank=True, null=True)
+    groip_id=models.ForeignKey('Groups')
 
     class Meta:
         managed = False
         db_table = 'point'
-
-
-class Point_kp(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    point = models.IntegerField()
-    kp = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'point_kp'
 
 
 class TimeDay(models.Model):
@@ -205,4 +173,28 @@ class TimeDay(models.Model):
     class Meta:
         managed = False
         db_table = 'time_day'
+        
+#    def __unicode__(self):
+#        return self.number_5min
 
+class Point_kp(models.Model):
+    point=models.IntegerField()
+    kp=models.IntegerField()
+    
+    class Meta:
+        db_table='point_kp'
+
+class Data1H(models.Model):
+    dtime = models.DateTimeField()
+    point = models.IntegerField()
+    param = models.IntegerField()
+    zn = models.FloatField()
+
+    class Meta:
+        db_table = 'data_1h'
+
+class Groups(models.Model):
+    name = models.CharField(max_length=30)
+
+    class Meta:
+        db_table='groups'

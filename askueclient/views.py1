@@ -121,40 +121,22 @@ def results(request, point_id):
         return render(request, 'askueclient/result1.html', context_dict)
     if request.method == 'POST':
         try:
-            flistres=[]
-            context_dict={}
-            pk=str(request.POST['date1'])
-            pd=str(request.POST['date2'])
-            month_b=pk[:2]; day_b=pk[3:5]; year_b=pk[6:10]
-            month_e=pd[:2]; day_e=pd[3:5]; year_e=pd[6:10]
-            dtime_b=datetime(int(year_b), int(month_b), int(day_b))
-            dtime_e=datetime(int(year_e), int(month_e), int(day_e))
-            point_number=que_point(point_id)
-            for i in [1,2,3,4]:
-                result=query2(Data30M, point_id,i, dtime_b, dtime_e)
-                for n in range(len(result)):
-                    flistres.append(result[n].zn)
-                context_dict['zn'+str(i)]=flistres
-                flistres=[]
+            pk=request.POST['date1']
+            pd=request.POST['date2']
         except (KeyError, 'name DoesNotExist'):
             # Redisplay the question voting form.
-            return render(request, 'askueclient/result1.html', {
-             'error_message': "You selected wri=ong date.",
+            return render(request, 'askueclient/about.html', {
+             'error_message': "You didn't select a choice.",
             })
-        else: 
+        else:
+            context_dict={'pk':pk}
             context_dict.update({'pd': pd})
-            context_dict.update({'point_n':point_number})
             #return HttpResponse(context_dict)
             return render(request, 'askueclient/result1.html', context_dict)
 
 def query(table,point_id, pr):
 	queue= table.objects.filter(point=point_id).filter(dtime__gte=date.today()).filter(param=pr).order_by('dtime')
 	return queue
-	
-def query2(table, point_id, pr, dt_begin, dt_end):
-    queue= table.objects.filter(point=point_id).filter(dtime__gte=dt_begin).filter(dtime__lte=dt_end).filter(param=pr).order_by('dtime')
-    return queue
-
 	
 
 	
@@ -214,64 +196,6 @@ def time_hour(request, point_id):
     data = JSONEncoder().encode(fdict)
     return HttpResponse(data)
        
-def several_days(request, point_id):
-    current_date=date.today()
-    str_date=current_date.strftime('%d.%m.%Y')
-    pn_id = None
-    flistres=[]
-    fdict={}
-    flist=[]
-    if request.method == 'GET':
-        pn_id = point_id
-        for i in [1,2,3,4]:
-            result=query(Data1H, pn_id, i)
-            for n in range(len(result)):
-                flistres.append(result[n].zn)
-            fdict['zn'+str(i)]=flistres
-            flistres=[]
-        for i in range(1,25):
-            zn=TimeDay.objects.get(id=i)
-            zs=zn.number_1hour
-            flist.append(zs)
-        fdict['ftime']=flist
-        fdict['cur_day']=str_date
-        #fdict['zn']=flistres
-        data=json.dumps(fdict)
-        data = JSONEncoder().encode(fdict)
-        return HttpResponse(data)
-    if request.method == 'POST':
-        try:
-            flistres=[]
-            context_dict={}
-            pk=str(request.POST['date1'])
-            pd=str(request.POST['date2'])
-            month_b=pk[:2]; day_b=pk[3:5]; year_b=pk[6:10]
-            month_e=pd[:2]; day_e=pd[3:5]; year_e=pd[6:10]
-            dtime_b=datetime(int(year_b), int(month_b), int(day_b))
-            dtime_e=datetime(int(year_e), int(month_e), int(day_e))
-            point_number=que_point(point_id)
-            for i in [1,2,3,4]:
-                result=query2(Data30M, point_id,i, dtime_b, dtime_e)
-                for n in range(len(result)):
-                    flistres.append(result[n].zn)
-                context_dict['zn'+str(i)]=flistres
-                flistres=[]
-        except (KeyError, 'name DoesNotExist'):
-            # Redisplay the question voting form.
-            return render(request, 'askueclient/result1.html', {
-             'error_message': "You selected wri=ong date.",
-            })
-        else: 
-            context_dict.update({'pd': pd})
-            context_dict.update({'point_n':point_id})
-            data={}
-            data['key']= 'value'
-            data['next']=[4,3,4,5,1,6,5]
-            json_data=json.dumps(context_dict)
-            #data=json.dumps(context_dict)
-            #data = JSONEncoder().encode(context_dict)
-            return HttpResponse(json_data)
-            #return render(request, 'askueclient/result1.html', context_dict)
     
     
 #def get_name(request):
